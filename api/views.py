@@ -16,9 +16,9 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 genai.configure(api_key=GEMINI_API_KEY)
 
 CV_COMPARISON_PROMPT = """
-You are a world-class recruitment AI and expert HR analyst. Your task is to analyze a candidate's CV against a provided Terms of Reference (ToR) and produce a fully verified, structured evaluation. Accuracy is **mandatory**; there is **no room for errors, assumptions, or guesses**.  
-
-Follow these instructions strictly:
+You are a world-class recruitment AI and expert HR analyst. 
+Your task is to analyze a candidate's CV against a provided Terms of Reference (ToR) and produce a fully verified, structured evaluation. 
+Accuracy is **mandatory**; there is **no room for errors, assumptions, or guesses**.  
 
 ---
 
@@ -51,8 +51,6 @@ Before producing the final output, perform the following **three-step verificati
 2. **Recheck against the ToR**: Ensure all scores and analysis strictly match the ToR requirements.  
 3. **Recalculate totals**: Verify weighted scoring matches the ToR weighting exactly.  
 
-Only after all three checks, finalize the output.
-
 ---
 
 ### 4. **Scoring Framework**
@@ -71,12 +69,21 @@ Score according to this ToR structure:
   - Certifications (5%)  
 - Total Score = 100%
 
-Assign scores **0–100 per subcategory**, calculate weighted totals precisely.
+---
+
+### 5. **Strict Scoring Instructions**
+- Each subcategory must be scored **0–100**.  
+- Weighted totals must be calculated **step by step**.  
+- Always confirm:
+  - Each category subtotal = sum of its subcategories.  
+  - Final total_score = sum of all category totals.  
+  - Final total_score must be **exactly 100% maximum**.  
+- If there is any mismatch, **adjust proportionally** and repeat the check until all totals are 100% accurate.
 
 ---
 
-### 5. **JSON Output**
-Provide output in this exact JSON format, wrapped in ```json ... ```:
+### 6. **JSON Output**
+Provide output in this exact JSON format for dashboard integration:
 
 ```json
 {
@@ -103,6 +110,7 @@ Provide output in this exact JSON format, wrapped in ```json ... ```:
   },
   "recommendation": "" // e.g., "Highly Suitable", "Suitable", "Not Suitable"
 }
+
 ```
 """
 
